@@ -3,7 +3,7 @@
 CC = $(CROSS_COMPILE)gcc
 PTHREAD_LIBS = -lpthread
 WARNINGS = -Wall -Wextra
-CFLAGS = $(WARNINGS) -g -I../include
+CFLAGS = $(WARNINGS) -g -I$(KERNEL_PATH)/include/uapi/linux/usb/
 LDFLAGS = $(PTHREAD_LIBS)
 
 all: ffs-test
