@@ -1,0 +1,16 @@
+
+FFS-Test: Userspace USB Gadget for ELC 2014
+--------------------------------------------
+
+This is the userspace code which runs on a USB device which is using the USB
+gadget framework and configfs.  This software manages the endpoints and
+provides the acutal source and sync of data.  It has been modified from the
+originals to allow configurable endpoint lengths and add additional
+endpoints, as well as building outside the kernel source tree.  This code
+was used for my talk titled "USB and the Real World" at Embedded Linux
+Conference 2014.
+
+It is copied and modified from the ffs-test program which is part of the
+Linux Kernel sources (located in tools/usb).
+
+Alan Ott
