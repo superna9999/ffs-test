@@ -116,10 +116,16 @@ static const struct {
 	struct {
 		struct usb_interface_descriptor intf;
 		struct usb_endpoint_descriptor_no_audio sink;
+		struct usb_endpoint_descriptor_no_audio sink1;
+		struct usb_endpoint_descriptor_no_audio sink2;
+		struct usb_endpoint_descriptor_no_audio sink3;
 		struct usb_endpoint_descriptor_no_audio source;
+		struct usb_endpoint_descriptor_no_audio source1;
+		struct usb_endpoint_descriptor_no_audio source2;
+		struct usb_endpoint_descriptor_no_audio source3;
+#if 0
 		struct usb_endpoint_descriptor_no_audio sink_iso;
 		struct usb_endpoint_descriptor_no_audio source_iso;
-#if 0
 		struct usb_interface_descriptor intf_alt;
 		struct usb_endpoint_descriptor_no_audio sink_alt;
 		struct usb_endpoint_descriptor_no_audio source_alt;
@@ -134,12 +140,12 @@ static const struct {
 				     FUNCTIONFS_HAS_HS_DESC),
 		.length = cpu_to_le32(sizeof descriptors),
 	},
-	.fs_count = cpu_to_le32(3),
+	.fs_count = cpu_to_le32(9),
 	.fs_descs = {
 		.intf = {
 			.bLength = sizeof descriptors.fs_descs.intf,
 			.bDescriptorType = USB_DT_INTERFACE,
-			.bNumEndpoints = 4,
+			.bNumEndpoints = 8,
 			.bInterfaceClass = USB_CLASS_VENDOR_SPEC,
 			.iInterface = 1,
 		},
@@ -150,13 +156,56 @@ static const struct {
 			.bmAttributes = USB_ENDPOINT_XFER_BULK,
 			/* .wMaxPacketSize = autoconfiguration (kernel) */
 		},
+		.sink1 = {
+			.bLength = sizeof descriptors.fs_descs.sink,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 2 | USB_DIR_IN,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			/* .wMaxPacketSize = autoconfiguration (kernel) */
+		},
+		.sink2 = {
+			.bLength = sizeof descriptors.fs_descs.sink,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 3 | USB_DIR_IN,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			/* .wMaxPacketSize = autoconfiguration (kernel) */
+		},
+		.sink3 = {
+			.bLength = sizeof descriptors.fs_descs.sink,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 4 | USB_DIR_IN,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			/* .wMaxPacketSize = autoconfiguration (kernel) */
+		},
 		.source = {
+			.bLength = sizeof descriptors.fs_descs.source,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 1 | USB_DIR_OUT,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			/* .wMaxPacketSize = autoconfiguration (kernel) */
+		},
+		.source1 = {
 			.bLength = sizeof descriptors.fs_descs.source,
 			.bDescriptorType = USB_DT_ENDPOINT,
 			.bEndpointAddress = 2 | USB_DIR_OUT,
 			.bmAttributes = USB_ENDPOINT_XFER_BULK,
 			/* .wMaxPacketSize = autoconfiguration (kernel) */
 		},
+		.source2 = {
+			.bLength = sizeof descriptors.fs_descs.source,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 3 | USB_DIR_OUT,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			/* .wMaxPacketSize = autoconfiguration (kernel) */
+		},
+		.source3 = {
+			.bLength = sizeof descriptors.fs_descs.source,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 4 | USB_DIR_OUT,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			/* .wMaxPacketSize = autoconfiguration (kernel) */
+		},
+#if 0
 		.sink_iso = {
 			.bLength = sizeof descriptors.hs_descs.sink,
 			.bDescriptorType = USB_DT_ENDPOINT,
@@ -169,7 +218,6 @@ static const struct {
 			.bEndpointAddress = 4 | USB_DIR_OUT,
 			.bmAttributes = USB_ENDPOINT_XFER_BULK,
 		},
-#if 0
 		// Alt setting!
 		.intf_alt = {
 			.bLength = sizeof descriptors.fs_descs.intf,
@@ -207,12 +255,12 @@ static const struct {
 		},
 #endif
 	},
-	.hs_count = cpu_to_le32(3),
+	.hs_count = cpu_to_le32(9),
 	.hs_descs = {
 		.intf = {
 			.bLength = sizeof descriptors.fs_descs.intf,
 			.bDescriptorType = USB_DT_INTERFACE,
-			.bNumEndpoints = 4,
+			.bNumEndpoints = 8,
 			.bInterfaceClass = USB_CLASS_VENDOR_SPEC,
 			.iInterface = 1,
 		},
@@ -220,10 +268,40 @@ static const struct {
 			.bLength = sizeof descriptors.hs_descs.sink,
 			.bDescriptorType = USB_DT_ENDPOINT,
 			.bEndpointAddress = 1 | USB_DIR_IN,
+			.bmAttributes = USB_ENDPOINT_XFER_ISOC,
+			.wMaxPacketSize = cpu_to_le16(1024)  | (0x0 << 11),
+			.bInterval = 1,
+		},
+		.sink1 = {
+			.bLength = sizeof descriptors.hs_descs.sink,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 2 | USB_DIR_IN,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			.wMaxPacketSize = cpu_to_le16(512),
+		},
+		.sink2 = {
+			.bLength = sizeof descriptors.hs_descs.sink,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 3 | USB_DIR_IN,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			.wMaxPacketSize = cpu_to_le16(512),
+		},
+		.sink3 = {
+			.bLength = sizeof descriptors.hs_descs.sink,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 4 | USB_DIR_IN,
 			.bmAttributes = USB_ENDPOINT_XFER_BULK,
 			.wMaxPacketSize = cpu_to_le16(512),
 		},
 		.source = {
+			.bLength = sizeof descriptors.hs_descs.source,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 1 | USB_DIR_OUT,
+			.bmAttributes = USB_ENDPOINT_XFER_ISOC,
+			.wMaxPacketSize = cpu_to_le16(1024),
+			.bInterval = 0, /* NAK every 1 uframe */
+		},
+		.source1 = {
 			.bLength = sizeof descriptors.hs_descs.source,
 			.bDescriptorType = USB_DT_ENDPOINT,
 			.bEndpointAddress = 2 | USB_DIR_OUT,
@@ -231,6 +309,23 @@ static const struct {
 			.wMaxPacketSize = cpu_to_le16(512),
 			.bInterval = 1, /* NAK every 1 uframe */
 		},
+		.source2 = {
+			.bLength = sizeof descriptors.hs_descs.source,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 3 | USB_DIR_OUT,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			.wMaxPacketSize = cpu_to_le16(512),
+			.bInterval = 1, /* NAK every 1 uframe */
+		},
+		.source3 = {
+			.bLength = sizeof descriptors.hs_descs.source,
+			.bDescriptorType = USB_DT_ENDPOINT,
+			.bEndpointAddress = 4 | USB_DIR_OUT,
+			.bmAttributes = USB_ENDPOINT_XFER_BULK,
+			.wMaxPacketSize = cpu_to_le16(512),
+			.bInterval = 1, /* NAK every 1 uframe */
+		},
+#if 0
 		.sink_iso = {
 			.bLength = sizeof descriptors.hs_descs.sink,
 			.bDescriptorType = USB_DT_ENDPOINT,
@@ -247,7 +342,6 @@ static const struct {
 			.wMaxPacketSize = cpu_to_le16(512),
 			.bInterval = 0, /* NAK every 1 uframe */
 		},
-#if 0
 		// Alt Setting!
 		.intf_alt = {
 			.bLength = sizeof descriptors.fs_descs.intf,
@@ -440,10 +534,47 @@ static struct thread {
 	},
 	{
 		"ep2", 8 * 1024, /* overwritten in main() */
+		fill_in_buf, "<in>",
+		write_wrap, NULL,
+		0, 0, NULL, 0
+	},
+	{
+		"ep3", 8 * 1024, /* overwritten in main() */
+		fill_in_buf, "<in>",
+		write_wrap, NULL,
+		0, 0, NULL, 0
+	},
+	{
+		"ep4", 8 * 1024, /* overwritten in main() */
+		fill_in_buf, "<in>",
+		write_wrap, NULL,
+		0, 0, NULL, 0
+	},
+	{
+		"ep5", 8 * 1024, /* overwritten in main() */
 		read_wrap, NULL,
 		empty_out_buf, "<out>",
 		0, 0, NULL, 0
 	},
+	{
+		"ep6", 8 * 1024, /* overwritten in main() */
+		read_wrap, NULL,
+		empty_out_buf, "<out>",
+		0, 0, NULL, 0
+	},
+	{
+		"ep7", 8 * 1024, /* overwritten in main() */
+		read_wrap, NULL,
+		empty_out_buf, "<out>",
+		0, 0, NULL, 0
+	},
+	{
+		"ep8", 8 * 1024, /* overwritten in main() */
+		read_wrap, NULL,
+		empty_out_buf, "<out>",
+		0, 0, NULL, 0
+	},
+#if 0
 	{
 		"ep3", 8 * 1024, /* overwritten in main() */
 		fill_in_buf, "<in>",
@@ -456,6 +587,7 @@ static struct thread {
 		empty_out_buf, "<out>",
 		0, 0, NULL, 0
 	},
+#endif
 };
 
 
@@ -754,9 +886,8 @@ int main(int argc, char **argv)
 			return 1;
 		}
 
-		threads[1].buf_size = buf_size;
-		threads[2].buf_size = buf_size;
-		threads[3].buf_size = buf_size;
+		for (i = 1; i < sizeof threads / sizeof *threads; ++i)
+			threads[i].buf_size = buf_size;
 	}
 
 	legacy_descriptors = argc > 2 && !strcmp(argv[2], "-l");
